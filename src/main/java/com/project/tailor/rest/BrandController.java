@@ -1,60 +1,92 @@
 package com.project.tailor.rest;
 
 import java.util.List;
-import java.util.Optional;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.tailor.dao.BrandRepository;
+
 import com.project.tailor.entity.Brand;
+import com.project.tailor.service.BrandService;
 
 @RestController
 @RequestMapping("/brands")
 public class BrandController {
 	
 	@Autowired
-	private BrandRepository brandRepository;
+	private BrandService brandService;
 	
 	
 	@GetMapping()
 	public List<Brand> getAllBrands(){
-		return brandRepository.findAll();
+		return brandService.findAll();
 	}
 	
-	@GetMapping("/{BrandId}")
-	public Brand getBrandById(@PathVariable int BrandId){
-		Brand b = brandRepository.findById(BrandId).get();
-		//add exception
-		return b;
-	}
 	
-
-	@PostMapping("")
-	public String addBrand() {
-		Brand b= new Brand();
-		b.setName("iris2");
-		brandRepository.save(b);
-		return "saved";
-	}
 	
-	@DeleteMapping("/{BrandId}")
-	public Brand deleteB(@PathVariable int BrandId) {
-		Brand b = brandRepository.findById(BrandId).get();
+	@GetMapping("/{brandId}")
+	public Brand getBrandById(@PathVariable int brandId){
 		
-		if (b!=null) {
-			brandRepository.deleteById(BrandId);
+		Brand brand = brandService.findById(brandId);
+		
+		if (brand==null) 
+			throw  new RuntimeException("Brand id not found -"+brandId);
+		
+		return brand;
+	}
+	
+	
+	
+	@PostMapping("")
+	public Brand addBrand(@RequestBody Brand brand) {
+		
+		//validating data
+		
+		brandService.save(brand);
+		
+		return brand;
+	}
+	
+	
+	
+	
+	@PutMapping("")
+	public Brand updateBrand(@RequestBody Brand brand) {
+
+		if (brand.getId()==null)
+				throw  new RuntimeException("Id is missing");
+	
+		Brand tempBrand = brandService.findById(brand.getId());
+		if (tempBrand==null) 
+			throw  new RuntimeException("Brand id not found -"+brand.getId());
+		
+		
+		brandService.save(brand);
+		
+		return brand;
+	}
+	
+	
+	@DeleteMapping("/{brandId}")
+	public Brand deleteBrand(@PathVariable int brandId) {
+		
+		Brand brand = brandService.findById(brandId);
+
+		if (brand==null) {
+			throw  new RuntimeException("Brand id not found -"+brandId);
 		}
-		    
-		//add exception
-		return b;
+
+		brandService.deleteById(brandId);
+		
+		return brand;
 	}
 	
 	
