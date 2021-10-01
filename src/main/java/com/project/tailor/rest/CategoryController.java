@@ -25,66 +25,55 @@ public class CategoryController {
 	
 	
 	@GetMapping()
-	public  List<Category> getAllCategories(){
-		return categoryService.findAll();
+	public  List<Category> getAllCategories() throws Exception{
+			return categoryService.findAll();
 	}
 	
 	
 	
 	@GetMapping("/{categoryId}")
-	public  Category getCategoryById(@PathVariable int categoryId){
-
-		Category category = categoryService.findById(categoryId);
-		
-		if (category==null) 
-			throw  new RuntimeException("Brand id not found -"+categoryId);
-		
-		return category;
+	public  Category getCategoryById(@PathVariable int categoryId) throws Exception{
+			//add validation for id format
+			Category category = categoryService.findById(categoryId);
+			
+			return category;
 	}
 	
 	
 	
 	@PostMapping("")
-	public Category addBrand(@RequestBody Category category) {
-		
-		//validating data
-		
-		categoryService.save(category);
-		
-		return category;
+	public Category addBrand(@RequestBody Category category) throws Exception {
+			//validating data
+			
+			categoryService.save(category);
+			
+			return category;
 	}
 	
 	
 	
 	@PutMapping("")
-	public Category updateCategory(@RequestBody Category category) {
-		
-		if (category.getId()==null) 
-			throw  new RuntimeException("Id is missing");
+	public Category updateCategory(@RequestBody Category category) throws Exception {
+			if (category.getId()==null) 
+				throw  new RuntimeException("Id is missing");
 
-		Category tempCategory = categoryService.findById(category.getId());
-		if (tempCategory==null) 
-			throw  new RuntimeException("Brand id not found -"+category.getId());
+			Category tempCategory = categoryService.findById(category.getId());
 
-		categoryService.save(category);
-		
-		return category;
+			categoryService.save(category);
+			
+			return category;
 	}
 	
 	
 	
 	@DeleteMapping("/{categoryId}")
-	public Category deleteCategory(@PathVariable int categoryId) {
-		
+	public Category deleteCategory(@PathVariable int categoryId) throws Exception {
+
 		Category category = categoryService.findById(categoryId);
 
-		if (category==null) {
-			throw  new RuntimeException("Category id not found -"+categoryId);
-		}
-
-		categoryService.deleteById(categoryId);
-		
-		return category;
+			categoryService.deleteById(categoryId);
+			
+			return category;
 	}
 	
 }

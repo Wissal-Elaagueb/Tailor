@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.project.tailor.dao.CategoryRepository;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.entity.Category;
+import com.project.tailor.exceptionhandeling.ResourceNotFoundException;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -30,12 +31,10 @@ public class CategoryServiceImpl implements CategoryService {
 		
         Category category = null;
         
-        if (result.isPresent()) {
+        if (result.isPresent()) 
        	 category = result.get();
-        }
-        else {
-       	 throw new RuntimeException("Did not find employe id - "+id);
-        }
+        else 
+        	throw new ResourceNotFoundException("Category Id not Found - "+id);
         
         return category;
 	}
