@@ -32,7 +32,7 @@ public class BrandServiceImpl implements BrandService {
 		Optional<Brand> result = brandRepository.findById(id);
 		
         Brand brand = null;
-        
+       
         if (result.isPresent()) 
        	 	brand = result.get();
         else 

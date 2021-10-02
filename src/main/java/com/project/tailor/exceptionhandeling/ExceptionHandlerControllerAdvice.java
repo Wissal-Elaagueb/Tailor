@@ -1,18 +1,18 @@
 package com.project.tailor.exceptionhandeling;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
 
 @ControllerAdvice
 public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(ResourceNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public @ResponseBody ExceptionResponse handleResourceNotFound(Exception e){
+	public ResponseEntity<ExceptionResponse> handleResourceNotFound(ResourceNotFoundException e){
 		
 		ExceptionResponse error= new ExceptionResponse();
 		
@@ -20,12 +20,13 @@ public class ExceptionHandlerControllerAdvice {
 		error.setMessage(e.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
 		
-		return error;
+		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 	
+	
+	
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	public @ResponseBody ExceptionResponse handlebBadRequest(Exception e){
+	public ResponseEntity<ExceptionResponse> handlebBadRequest(Exception e){
 		
 		ExceptionResponse error= new ExceptionResponse();
 		
@@ -33,12 +34,12 @@ public class ExceptionHandlerControllerAdvice {
 		error.setMessage(e.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
 		
-		return error;
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
 	
+	
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public @ResponseBody ExceptionResponse handlebException(Exception e){
+	public ResponseEntity<ExceptionResponse> handlebException(Exception e){
 		
 		ExceptionResponse error= new ExceptionResponse();
 		
@@ -46,7 +47,7 @@ public class ExceptionHandlerControllerAdvice {
 		error.setMessage(e.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
 		
-		return error;
+		return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	
