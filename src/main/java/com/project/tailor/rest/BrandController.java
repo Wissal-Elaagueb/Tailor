@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.exceptionhandeling.ResourceNotFoundException;
 import com.project.tailor.service.BrandService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/brands")
@@ -29,7 +31,9 @@ public class BrandController {
 	
 	@GetMapping()
 	public List<Brand> getAllBrands() throws Exception {
+		final Logger logger = LoggerFactory.getLogger(BrandController.class);	
 		try {
+			logger.debug("*****************************************--Application Started--");
 			return brandService.findAll();
 		}catch(Exception e) {
 			 throw new Exception(e.getMessage());
