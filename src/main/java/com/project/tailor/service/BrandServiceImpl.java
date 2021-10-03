@@ -3,6 +3,7 @@ package com.project.tailor.service;
 import java.util.List;
 import java.util.Optional;
 
+import com.project.tailor.exceptionhandeling.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 
-	@Override
+	/*@Override
 	public Brand findById(int id) {
 		Optional<Brand> result = brandRepository.findById(id);
 		
@@ -39,7 +40,20 @@ public class BrandServiceImpl implements BrandService {
         	throw new ResourceNotFoundException("Brand Id not Found - "+id);
         
         return brand;
+	}*/
+
+
+	@Override
+	public Brand findById(Integer id) throws BadRequestException {
+		Optional<Brand> brand = brandRepository.findById(id);
+
+		if (brand.isEmpty())
+			throw new BadRequestException("Brand not found");
+
+		return brand.get();
 	}
+
+
 	
 
 	

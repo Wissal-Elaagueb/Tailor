@@ -3,6 +3,8 @@ package com.project.tailor.rest;
 import java.util.List;
 
 
+import com.project.tailor.exceptionhandeling.BadRequestException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,20 +22,21 @@ import com.project.tailor.service.BrandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/brands")
+@Slf4j
 public class BrandController {
 	
 	@Autowired
 	private BrandService brandService;
-	
 
-	
+
 	@GetMapping()
 	public List<Brand> getAllBrands() throws Exception {
-		final Logger logger = LoggerFactory.getLogger(BrandController.class);	
 		try {
-			logger.debug("*****************************************--Application Started--");
+			log.debug("*****************************************--Application Started--");
 			return brandService.findAll();
 		}catch(Exception e) {
 			 throw new Exception(e.getMessage());
@@ -43,23 +46,16 @@ public class BrandController {
 	
 	
 	@GetMapping("/{brandId}")
-	public Brand getBrandById(@PathVariable int brandId) throws Exception{
-		
-		try {	
-			Brand brand = brandService.findById(brandId);
-			return brand;
-				
-		} catch (ResourceNotFoundException e) {
-				throw new ResourceNotFoundException(e.getMessage());
-		}catch (Exception e) {
-				throw new Exception(e.getMessage());
-		}
+	public ResponseEntity<Brand> findById(@PathVariable Integer brandId) throws BadRequestException {
+		//Logs
+		Brand brand = brandService.findById(brandId);
+		return ResponseEntity.ok(brand);
 	}
 	
 	
 	
 	@PostMapping("")
-	public ResponseEntity<String> addBrand(@RequestBody Brand brand) throws Exception {
+	public ResponseEntity<String> addBrand(@Valid @RequestBody Brand brand) throws Exception {
 			try {
 				//validating data
 				brandService.save(brand);
