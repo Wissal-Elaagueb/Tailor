@@ -26,6 +26,14 @@ public class Brand {
     @Column(name="name",unique=true)
 	@NotBlank(message = "Manhebouch null")
 	private String name;
+
+	public Integer getId() {
+		return id;
+	}
+
+	public String getName() {
+		return name;
+	}
 	
 
 }

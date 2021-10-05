@@ -11,7 +11,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.project.tailor.dao.BrandRepository;
 import com.project.tailor.entity.Brand;
-import com.project.tailor.exceptionhandeling.ResourceNotFoundException;
 
 @Service
 public class BrandServiceImpl implements BrandService {
@@ -28,42 +27,32 @@ public class BrandServiceImpl implements BrandService {
 	}
 
 
-	/*@Override
-	public Brand findById(int id) {
-		Optional<Brand> result = brandRepository.findById(id);
-		
-        Brand brand = null;
-       
-        if (result.isPresent()) 
-       	 	brand = result.get();
-        else 
-        	throw new ResourceNotFoundException("Brand Id not Found - "+id);
-        
-        return brand;
-	}*/
-
-
 	@Override
 	public Brand findById(Integer id) throws BadRequestException {
 		Optional<Brand> brand = brandRepository.findById(id);
 
 		if (brand.isEmpty())
-			throw new BadRequestException("Brand not found");
+			throw new BadRequestException("Brand not found - "+id);
 
 		return brand.get();
 	}
 
 
-	
-
-	
 	@Override
 	public void save(Brand brand) {
 		brandRepository.save(brand);
 	}
+	
+	@Override
+	public void update(Integer id, Brand brand) throws BadRequestException {
+		findById(id);	
+		brandRepository.save(brand);
+	}
 
 	@Override
-	public void deleteById(int id) {
+	public void deleteById(int id) throws BadRequestException {
+		
+		findById(id);
 		brandRepository.deleteById(id);
 	}
 

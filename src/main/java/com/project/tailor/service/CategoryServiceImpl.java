@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.project.tailor.dao.CategoryRepository;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.entity.Category;
-import com.project.tailor.exceptionhandeling.ResourceNotFoundException;
+import com.project.tailor.exceptionhandeling.BadRequestException;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -26,27 +26,30 @@ public class CategoryServiceImpl implements CategoryService {
 	
 
 	@Override
-	public Category findById(int id) {
-		Optional<Category> result = categoryRepository.findById(id);
-		
-        Category category = null;
-        
-        if (result.isPresent()) 
-       	 category = result.get();
-        else 
-        	throw new ResourceNotFoundException("Category Id not Found - "+id);
-        
-        return category;
+	public Category findById(int id) throws BadRequestException {
+		Optional<Category> category = categoryRepository.findById(id);
+     
+		if (category.isEmpty()) 
+			throw new BadRequestException("Category not found - "+id);
+       
+		return category.get();
 	}
 
 	@Override
 	public void save(Category category) {
 		categoryRepository.save(category);
+	}
+	
+	@Override
+	public void update(Integer id,Category category) throws BadRequestException {
+		findById(id);
+		categoryRepository.save(category);
 
 	}
 
 	@Override
-	public void deleteById(int id) {
+	public void deleteById(int id) throws BadRequestException {
+		findById(id);
 		categoryRepository.deleteById(id);
 	}
 

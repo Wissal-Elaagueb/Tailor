@@ -4,8 +4,11 @@ import java.util.List;
 
 
 import com.project.tailor.exceptionhandeling.BadRequestException;
+import com.project.tailor.exceptionhandeling.SuccessResponse;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.tailor.entity.Brand;
-import com.project.tailor.exceptionhandeling.ResourceNotFoundException;
 import com.project.tailor.service.BrandService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,82 +31,79 @@ import javax.validation.Valid;
 @Slf4j
 public class BrandController {
 	
+	private static Logger log = LoggerFactory.getLogger(Slf4j.class);
+	
 	@Autowired
 	private BrandService brandService;
 
 
 	@GetMapping()
-	public List<Brand> getAllBrands() throws Exception {
-		try {
-			log.debug("*****************************************--Application Started--");
-			return brandService.findAll();
-		}catch(Exception e) {
-			 throw new Exception(e.getMessage());
-		}
+	public ResponseEntity<SuccessResponse> findAllBrands() {
+
+		log.info("calling method : findAllBrands()");
+		
+		List<Brand> brands= brandService.findAll();
+
+		SuccessResponse response= new SuccessResponse(brands,System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+
 	}
 	
 	
 	
 	@GetMapping("/{brandId}")
-	public ResponseEntity<Brand> findById(@PathVariable Integer brandId) throws BadRequestException {
-		//Logs
+	public ResponseEntity<SuccessResponse> findBrandById(@PathVariable Integer brandId) throws Exception {
+		
+		log.info("calling method : findBrand()");
+		
 		Brand brand = brandService.findById(brandId);
-		return ResponseEntity.ok(brand);
+
+		SuccessResponse response= new SuccessResponse(brand,System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+
 	}
 	
 	
 	
 	@PostMapping("")
-	public ResponseEntity<String> addBrand(@Valid @RequestBody Brand brand) throws Exception {
-			try {
-				//validating data
-				brandService.save(brand);
-				
-				return ResponseEntity.ok()
-				        .body("Brand saved with succes");
-				
-			} catch (Exception e) {
-				throw new Exception(e.getMessage());
-			}
-	}
+	public ResponseEntity<SuccessResponse> createBrand(@Valid @RequestBody Brand brand)  {
+		
+		log.info("calling method : createBrand()");
+		
+		brandService.save(brand);
+		
+		SuccessResponse response= new SuccessResponse("Brand created with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		}
 	
 	
 	
 	
-	@PutMapping("")
-	public ResponseEntity<String> updateBrand(@RequestBody Brand brand) throws Exception {
-			try {
-				if (brand.getId()==null)
-						throw  new RuntimeException("Id is missing"); //teb3a data validation
+	@PutMapping("/{brandId}")
+	public ResponseEntity<SuccessResponse> updateBrand(
+				@Valid @PathVariable Integer brandId, 
+				@Valid @RequestBody Brand brand) throws BadRequestException{
 
-				brandService.findById(brand.getId());	
-				brandService.save(brand);
+		log.info("calling method : updateBrand()");
+		
+		brandService.update(brandId, brand);
 
-				return ResponseEntity.ok()
-				        .body("Brand updatetd with succes");
-				
-			} catch (ResourceNotFoundException e) {
-				throw new ResourceNotFoundException(e.getMessage());
-			}catch (Exception e) {
-				throw new Exception(e.getMessage());
-			}
+		SuccessResponse response= new SuccessResponse("Brand updatetd with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		
 	}
 	
 	
 	@DeleteMapping("/{brandId}")
-	public ResponseEntity<String> deleteBrand(@PathVariable int brandId) throws Exception {
-		try {
-				brandService.findById(brandId);
-				brandService.deleteById(brandId);	
-				
-				return ResponseEntity.ok()
-				        .body("Brand deleted with succes");
-				
-		} catch (ResourceNotFoundException e) {
-				throw new ResourceNotFoundException(e.getMessage());
-		}catch (Exception e) {
-				throw new Exception(e.getMessage());
-		}
+	public ResponseEntity<SuccessResponse> deleteBrand(@Valid @PathVariable Integer brandId) throws BadRequestException{
+
+		log.info("calling method : deleteBrand()");
+		
+		brandService.deleteById(brandId);	
+		
+		SuccessResponse response= new SuccessResponse("Brand deleted with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+
 	}
 
 	

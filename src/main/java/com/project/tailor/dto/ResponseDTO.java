@@ -10,7 +10,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDTO {
-    private String message;
+  
+	private String message;
     private String type;
     private Integer status;
+    
+	public ResponseDTO(String message, String type, Integer status) {
+		this.message = message;
+		this.type = type;
+		this.status = status;
+	}
+    
+    
 }

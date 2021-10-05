@@ -2,7 +2,10 @@ package com.project.tailor.rest;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,95 +18,88 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.project.tailor.entity.Category;
-import com.project.tailor.exceptionhandeling.ResourceNotFoundException;
+import com.project.tailor.exceptionhandeling.BadRequestException;
+import com.project.tailor.exceptionhandeling.SuccessResponse;
 import com.project.tailor.service.CategoryService;
+
+import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/categories")
 public class CategoryController {
 
+	private static Logger log = LoggerFactory.getLogger(Slf4j.class);
+	
 	@Autowired
 	private CategoryService categoryService;
 	
 	
 	@GetMapping()
-	public  List<Category> getAllCategories() throws Exception{
-			try {
-				return categoryService.findAll();
-			}catch(Exception e) {
-				 throw new Exception(e.getMessage());
-			}
+	public  ResponseEntity<SuccessResponse> findAllCategories() throws Exception{
+	
+		log.info("calling method : findAllCategories()");
+		
+		List<Category> categories = categoryService.findAll();
+		
+		SuccessResponse response= new SuccessResponse(categories,System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 	
 	
 	
 	@GetMapping("/{categoryId}")
-	public  Category getCategoryById(@PathVariable int categoryId) throws Exception{
-			try {
-				Category category = categoryService.findById(categoryId);
-				return category;
-				
-			} catch (ResourceNotFoundException e) {
-				throw new ResourceNotFoundException(e.getMessage());
-		}catch (Exception e) {
-				throw new Exception(e.getMessage());
-		}
+	public  ResponseEntity<SuccessResponse> findCategoryById(@PathVariable Integer categoryId) throws BadRequestException {
+
+		log.info("calling method : findCategoryById()");
+		
+		Category category = categoryService.findById(categoryId);
+		
+		SuccessResponse response= new SuccessResponse(category,System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 	
 	
 	
 	@PostMapping("")
-	public ResponseEntity<String> addBrand(@RequestBody Category category) throws Exception {
-		try {
-				//validating data
-				categoryService.save(category);
+	public ResponseEntity<SuccessResponse> createCategory(@Valid @RequestBody Category category) throws Exception {
 				
-				return ResponseEntity.ok()
-				        .body("Category saved with succes");
-				
-			} catch (Exception e) {
-				throw new Exception(e.getMessage());
-			}
+		log.info("calling method : createCategory()");
+		
+		categoryService.save(category);
+		
+		SuccessResponse response= new SuccessResponse("Category created with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 	}
 	
 	
 	
-	@PutMapping("")
-	public ResponseEntity<String> updateCategory(@RequestBody Category category) throws Exception {
-			try {
-				if (category.getId()==null) 
-					throw  new RuntimeException("Id is missing");
-
-				categoryService.findById(category.getId());
-				categoryService.save(category);
+	@PutMapping("/{categoryId}")
+	public ResponseEntity<SuccessResponse> updateCategory(
+				@Valid @PathVariable Integer categoryId,
+				@Valid @RequestBody Category category) throws BadRequestException  {
 				
-				return ResponseEntity.ok()
-				        .body("Category updatetd with succes");
+		log.info("calling method : updateCategory()");
+		
+		categoryService.update(categoryId,category);
+		
+		SuccessResponse response= new SuccessResponse("Category updated with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 				
-			} catch (ResourceNotFoundException e) {
-				throw new ResourceNotFoundException(e.getMessage());
-			}catch (Exception e) {
-				throw new Exception(e.getMessage());
-			}
 	}
 	
 	
 	
 	@DeleteMapping("/{categoryId}")
-	public ResponseEntity<String> deleteCategory(@PathVariable int categoryId) throws Exception {
-		try {
+	public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable int categoryId) throws BadRequestException  {
 			
-			categoryService.findById(categoryId);
-			categoryService.deleteById(categoryId);
-				
-			return ResponseEntity.ok()
-			        .body("Category deleted with succes");
+		log.info("calling method : deleteCategory()");
+		
+		categoryService.deleteById(categoryId);
+		
+		SuccessResponse response= new SuccessResponse("Category deleted with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
 			
-		} catch (ResourceNotFoundException e) {
-				throw new ResourceNotFoundException(e.getMessage());
-		}catch (Exception e) {
-				throw new Exception(e.getMessage());
-		}
 	}
 	
 }

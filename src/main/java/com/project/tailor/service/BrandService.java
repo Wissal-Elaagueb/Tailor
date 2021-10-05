@@ -16,5 +16,10 @@ public interface BrandService {
 	
 	public void save(Brand brand);
 	
-	public void deleteById(int id);
+	void update(Integer brandId, Brand brand) throws BadRequestException;
+	
+	public void deleteById(int id) throws BadRequestException;
+
+
+	
 }
