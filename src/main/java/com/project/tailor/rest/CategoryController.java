@@ -43,7 +43,7 @@ public class CategoryController {
 		List<Category> categories = categoryService.findAll();
 		
 		SuccessResponse response= new SuccessResponse(categories,System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	
@@ -56,7 +56,7 @@ public class CategoryController {
 		Category category = categoryService.findById(categoryId);
 		
 		SuccessResponse response= new SuccessResponse(category,System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	
@@ -69,7 +69,7 @@ public class CategoryController {
 		categoryService.save(category);
 		
 		SuccessResponse response= new SuccessResponse("Category created with success",System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	
@@ -84,7 +84,7 @@ public class CategoryController {
 		categoryService.update(categoryId,category);
 		
 		SuccessResponse response= new SuccessResponse("Category updated with success",System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 				
 	}
 	
@@ -98,7 +98,7 @@ public class CategoryController {
 		categoryService.deleteById(categoryId);
 		
 		SuccessResponse response= new SuccessResponse("Category deleted with success",System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 			
 	}
 	

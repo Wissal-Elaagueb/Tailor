@@ -45,7 +45,7 @@ public class BrandController {
 		List<Brand> brands= brandService.findAll();
 
 		SuccessResponse response= new SuccessResponse(brands,System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
 	
@@ -54,12 +54,12 @@ public class BrandController {
 	@GetMapping("/{brandId}")
 	public ResponseEntity<SuccessResponse> findBrandById(@PathVariable Integer brandId) throws Exception {
 		
-		log.info("calling method : findBrand()");
+		log.info("calling method : findBrandById()");
 		
 		Brand brand = brandService.findById(brandId);
 
 		SuccessResponse response= new SuccessResponse(brand,System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
 	
@@ -73,7 +73,7 @@ public class BrandController {
 		brandService.save(brand);
 		
 		SuccessResponse response= new SuccessResponse("Brand created with success",System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 	
 	
@@ -89,7 +89,7 @@ public class BrandController {
 		brandService.update(brandId, brand);
 
 		SuccessResponse response= new SuccessResponse("Brand updatetd with success",System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 		
 	}
 	
@@ -102,7 +102,7 @@ public class BrandController {
 		brandService.deleteById(brandId);	
 		
 		SuccessResponse response= new SuccessResponse("Brand deleted with success",System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}
 

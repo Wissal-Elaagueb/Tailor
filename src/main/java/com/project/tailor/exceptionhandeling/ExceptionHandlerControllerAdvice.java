@@ -64,7 +64,6 @@ public class ExceptionHandlerControllerAdvice {
 						"Validation errors",
 						400));
 		*/
-		
 		ExceptionResponse error= new ExceptionResponse();
 		
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -73,8 +72,9 @@ public class ExceptionHandlerControllerAdvice {
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
+		
 	
-
+    /*
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> handlebException(Exception e){
 
@@ -86,5 +86,5 @@ public class ExceptionHandlerControllerAdvice {
 
 		return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+	*/
 }

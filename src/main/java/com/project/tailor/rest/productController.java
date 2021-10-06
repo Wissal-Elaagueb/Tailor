@@ -1,0 +1,104 @@
+package com.project.tailor.rest;
+
+import java.util.List;
+
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.project.tailor.entity.Product;
+import com.project.tailor.exceptionhandeling.BadRequestException;
+import com.project.tailor.exceptionhandeling.SuccessResponse;
+import com.project.tailor.service.ProductService;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("/products")
+@Slf4j
+public class productController {
+
+private static Logger log = LoggerFactory.getLogger(Slf4j.class);
+	
+	@Autowired
+	private ProductService productService;
+
+
+	@GetMapping()
+	public ResponseEntity<SuccessResponse> findAllProducts() {
+
+		log.info("calling method : findAllProductss()");
+		
+		List<Product> products= productService.findAll();
+
+		SuccessResponse response= new SuccessResponse(products,System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
+	}
+	
+	
+	@GetMapping("/{productId}")
+	public ResponseEntity<SuccessResponse> findProductById(@PathVariable Integer productId) throws Exception {
+		
+		log.info("calling method : findProductById()");
+		
+		Product product = productService.findById(productId);
+
+		SuccessResponse response= new SuccessResponse(product,System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
+	}
+	
+	
+	
+	@PostMapping("")
+	public ResponseEntity<SuccessResponse> createProduct(@Valid @RequestBody Product product)  {
+		
+		log.info("calling method : createProduct()");
+		
+		productService.save(product);
+		
+		SuccessResponse response= new SuccessResponse("Product created with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+	
+	
+	@PutMapping("/{productId}")
+	public ResponseEntity<SuccessResponse> updateProduct(
+				@Valid @PathVariable Integer productId, 
+				@Valid @RequestBody Product product) throws BadRequestException{
+
+		log.info("calling method : updateProduct()");
+		
+		productService.update(productId, product);
+
+		SuccessResponse response= new SuccessResponse("Product updatetd with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+		
+	}
+	
+	
+	@DeleteMapping("/{productId}")
+	public ResponseEntity<SuccessResponse> deleteProduct(@Valid @PathVariable Integer productId) throws BadRequestException{
+
+		log.info("calling method : deleteProduct()");
+		
+		productService.deleteById(productId);	
+		
+		SuccessResponse response= new SuccessResponse("Product deleted with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
+	}
+}

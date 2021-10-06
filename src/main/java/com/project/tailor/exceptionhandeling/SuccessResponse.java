@@ -1,6 +1,5 @@
 package com.project.tailor.exceptionhandeling;
 
-import com.project.tailor.entity.Brand;
 
 public class SuccessResponse {
 	

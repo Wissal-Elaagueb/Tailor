@@ -5,7 +5,6 @@ import java.util.List;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.exceptionhandeling.BadRequestException;
 
-import javax.validation.Valid;
 
 
 public interface BrandService {
@@ -18,7 +17,7 @@ public interface BrandService {
 	
 	void update(Integer brandId, Brand brand) throws BadRequestException;
 	
-	public void deleteById(int id) throws BadRequestException;
+	public void deleteById(Integer id) throws BadRequestException;
 
 
 	

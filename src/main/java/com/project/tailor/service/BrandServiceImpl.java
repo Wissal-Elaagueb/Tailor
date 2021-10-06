@@ -46,12 +46,12 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public void update(Integer id, Brand brand) throws BadRequestException {
 		findById(id);	
+		brand.setId(id);
 		brandRepository.save(brand);
 	}
 
 	@Override
-	public void deleteById(int id) throws BadRequestException {
-		
+	public void deleteById(Integer id) throws BadRequestException {
 		findById(id);
 		brandRepository.deleteById(id);
 	}

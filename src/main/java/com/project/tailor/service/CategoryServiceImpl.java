@@ -43,6 +43,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void update(Integer id,Category category) throws BadRequestException {
 		findById(id);
+		category.setId(id);
 		categoryRepository.save(category);
 
 	}
