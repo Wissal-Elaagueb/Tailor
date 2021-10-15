@@ -1,18 +1,22 @@
 package com.project.tailor.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
+import com.project.tailor.dto.ProductRequestDTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data //Getters setters and hashcode
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -25,7 +29,7 @@ public class Product {
 	private Integer id;
 	
 	@Column(name="name",unique=true)
-	@NotBlank(message = "Manhebouch null")
+	@NotBlank(message = "The name can't be null")
 	private String name;
 	
 	@Column(name="code",unique=true)
@@ -45,6 +49,27 @@ public class Product {
 	
 	@Column
 	private String fabric;
+	
+	@ManyToOne(cascade= CascadeType.ALL)
+	@JoinColumn(name="brand_id")
+	private Brand brand;
+
+	public Product(ProductRequestDTO product, Brand brand) {
+		this.name=product.getName();
+		this.code=product.getCode();
+		this.description=product.getDescription();
+		this.photos=product.getPhotos();
+		this.color=product.getColor();
+		this.size=product.getSize();
+		this.fabric=product.getFabric();
+		this.brand=brand;
+	}
+	
+	@Override
+	public String toString() {
+		return "Product [id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", photos="
+				+ photos + ", color=" + color + ", size=" + size + ", fabric=" + fabric + ", brand=" + brand + "]";
+	}
 
 	public Integer getId() {
 		return id;
@@ -110,10 +135,12 @@ public class Product {
 		this.fabric = fabric;
 	}
 
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", photos="
-				+ photos + ", color=" + color + ", size=" + size + ", fabric=" + fabric + "]";
+	public Brand getBrand() {
+		return brand;
+	}
+
+	public void setBrand(Brand brand) {
+		this.brand = brand;
 	}
 	
 	

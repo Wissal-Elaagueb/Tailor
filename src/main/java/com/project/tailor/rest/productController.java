@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.tailor.dto.ProductRequestDTO;
 import com.project.tailor.entity.Product;
 import com.project.tailor.exceptionhandeling.BadRequestException;
 import com.project.tailor.exceptionhandeling.SuccessResponse;
@@ -64,7 +65,7 @@ private static Logger log = LoggerFactory.getLogger(Slf4j.class);
 	
 	
 	@PostMapping("")
-	public ResponseEntity<SuccessResponse> createProduct(@Valid @RequestBody Product product)  {
+	public ResponseEntity<SuccessResponse> createProduct(@RequestBody ProductRequestDTO product) throws BadRequestException  {
 		
 		log.info("calling method : createProduct()");
 		
