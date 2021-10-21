@@ -11,18 +11,19 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.tailor.dto.ProductRequestDTO;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 public class Product {
 
-	public Product() {
-	}
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -51,6 +52,7 @@ public class Product {
 	private String fabric;
 	
 	@ManyToOne(cascade= CascadeType.ALL)
+	@JsonIgnore
 	@JoinColumn(name="brand_id")
 	private Brand brand;
 
@@ -64,86 +66,5 @@ public class Product {
 		this.fabric=product.getFabric();
 		this.brand=brand;
 	}
-	
-	@Override
-	public String toString() {
-		return "Product [id=" + id + ", name=" + name + ", code=" + code + ", description=" + description + ", photos="
-				+ photos + ", color=" + color + ", size=" + size + ", fabric=" + fabric + ", brand=" + brand + "]";
-	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public long getCode() {
-		return code;
-	}
-
-	public void setCode(long code) {
-		this.code = code;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getPhotos() {
-		return photos;
-	}
-
-	public void setPhotos(String photos) {
-		this.photos = photos;
-	}
-
-	public String getColor() {
-		return color;
-	}
-
-	public void setColor(String color) {
-		this.color = color;
-	}
-
-	public String getSize() {
-		return size;
-	}
-
-	public void setSize(String size) {
-		this.size = size;
-	}
-
-	public String getFabric() {
-		return fabric;
-	}
-
-	public void setFabric(String fabric) {
-		this.fabric = fabric;
-	}
-
-	public Brand getBrand() {
-		return brand;
-	}
-
-	public void setBrand(Brand brand) {
-		this.brand = brand;
-	}
-	
-	
-	
-	
 }

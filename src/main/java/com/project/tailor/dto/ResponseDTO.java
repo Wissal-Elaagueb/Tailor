@@ -1,12 +1,12 @@
 package com.project.tailor.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseDTO {
@@ -14,12 +14,4 @@ public class ResponseDTO {
 	private String message;
     private String type;
     private Integer status;
-    
-	public ResponseDTO(String message, String type, Integer status) {
-		this.message = message;
-		this.type = type;
-		this.status = status;
-	}
-    
-    
 }
