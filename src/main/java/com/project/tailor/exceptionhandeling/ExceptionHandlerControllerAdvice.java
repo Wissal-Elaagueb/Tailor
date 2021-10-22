@@ -85,7 +85,7 @@ public class ExceptionHandlerControllerAdvice {
 	}
 		
 	
-    
+ /*   
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> handlebException(Exception e){
 
@@ -97,5 +97,5 @@ public class ExceptionHandlerControllerAdvice {
 
 		return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
+	*/
 }

@@ -1,15 +1,19 @@
 package com.project.tailor.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Data
@@ -26,6 +30,9 @@ public class Category {
 
    	private String description;
 
+   	//mapped by : means the attributes in the other class
+   	@ManyToMany(mappedBy = "categories", fetch = FetchType.LAZY)
+    private Set<Product> products = new HashSet<>();
    	
 
 	public Category(String name, String description) {

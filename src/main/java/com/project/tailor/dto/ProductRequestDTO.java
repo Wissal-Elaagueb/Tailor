@@ -1,5 +1,7 @@
 package com.project.tailor.dto;
 
+import java.util.List;
+
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -26,7 +28,9 @@ public class ProductRequestDTO {
 	
 	private String fabric;
 
-	private Integer brand_id;
+	private Integer brandId;
+	
+	private List<Integer> categoriesId;
 
 	
 
