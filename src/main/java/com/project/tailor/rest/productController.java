@@ -65,7 +65,7 @@ private static Logger log = LoggerFactory.getLogger(Slf4j.class);
 	
 	
 	@PostMapping("")
-	public ResponseEntity<SuccessResponse> createProduct(@RequestBody ProductRequestDTO product) throws BadRequestException  {
+	public ResponseEntity<SuccessResponse> createProduct(@Valid @RequestBody ProductRequestDTO product) throws BadRequestException  {
 		
 		log.info("calling method : createProduct()");
 		
@@ -78,7 +78,7 @@ private static Logger log = LoggerFactory.getLogger(Slf4j.class);
 	
 	@PutMapping("/{productId}")
 	public ResponseEntity<SuccessResponse> updateProduct(
-				@Valid @PathVariable Integer productId, 
+				@PathVariable Integer productId, 
 				@Valid @RequestBody Product product) throws BadRequestException{
 
 		log.info("calling method : updateProduct()");

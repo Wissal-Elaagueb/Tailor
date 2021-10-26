@@ -2,7 +2,9 @@ package com.project.tailor.dto;
 
 import java.util.List;
 
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+
+
 
 import lombok.Data;
 
@@ -11,13 +13,15 @@ public class ProductRequestDTO {
 	
 	private Integer id;
 	
-	
+	@NotBlank(message = "Product name can't be null")
 	private String name;
 	
-	@Size(min=8, max=8, message="code length must be 8")
-	private long code;
+	@Digits(message="code must be a number of 8 digits", fraction = 0, integer = 8)
+	@Min(value=10000000,message="code must be a number of 8 digits")
+	private Integer code;
 	
 	@Size(max=255, message="The descripption can't be more than 255 careters")
+	@NotBlank(message="description can't be blank")
 	private String description;
 	
 	private String photos;

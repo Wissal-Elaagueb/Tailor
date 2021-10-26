@@ -1,9 +1,8 @@
 package com.project.tailor.entity;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,10 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.tailor.dto.ProductRequestDTO;
 
@@ -39,7 +36,6 @@ public class Product {
 	private Integer id;
 	
 	@Column(name="name",unique=true)
-	@NotBlank(message = "The name can't be null")
 	private String name;
 	
 	@Column(name="code",unique=true)

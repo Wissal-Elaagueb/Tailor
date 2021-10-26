@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.*;
 
-import org.springframework.format.annotation.NumberFormat;
-
 
 @Entity
 @Data //Getters setters and hashcode
