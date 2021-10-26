@@ -59,8 +59,6 @@ public class ProductServiceImpl implements ProductService {
 		List<Integer> categoriesId = product.getCategoriesId();
 		List<Category> categories= new ArrayList();
 		Category category;
-		
-		
 		for (Integer i : categoriesId) {
 		  	category=  categoryService.findById(i);
 		  	categories.add(category);

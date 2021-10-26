@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-
+import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,9 +25,12 @@ public class Category {
 	@Column(name="id")
 	private Integer id;
 
-    @Column(name="name",unique=true)	
+	
+    @Column(name="name",unique=true)
+    @NotBlank(message = "Category name can't be blank")
 	private String name;
 
+    @NotBlank(message = "Description can't be blank")
    	private String description;
 
    	//mapped by : means the attributes in the other class

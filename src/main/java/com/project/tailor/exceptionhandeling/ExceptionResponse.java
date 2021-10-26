@@ -1,9 +1,11 @@
 package com.project.tailor.exceptionhandeling;
 
+import java.util.ArrayList;
+
 public class ExceptionResponse {
 
 	private int status;
-	private String message;
+	private ArrayList<String> messages=new ArrayList<>();
 	private long timeStamp;
 	
 	
@@ -13,17 +15,21 @@ public class ExceptionResponse {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public String getMessage() {
-		return message;
+	public ArrayList<String> getMessage() {
+		return messages;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setMessage(ArrayList<String> messages) {
+		this.messages = messages;
 	}
 	public long getTimeStamp() {
 		return timeStamp;
 	}
 	public void setTimeStamp(long timeStamp) {
 		this.timeStamp = timeStamp;
+	}
+	
+	public void add (String message) {
+		messages.add(message);
 	}
 	
 	

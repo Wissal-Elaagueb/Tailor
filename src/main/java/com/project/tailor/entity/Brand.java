@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.*;
 
+import org.springframework.format.annotation.NumberFormat;
+
 
 @Entity
 @Data //Getters setters and hashcode
@@ -26,7 +28,7 @@ public class Brand {
 	private Integer id;
 
     @Column(name="name",unique=true)
-	@NotBlank(message = "Manhebouch null")
+	@NotBlank(message = "Brand name can't be blank")
 	private String name;
     
     @OneToMany(mappedBy = "brand",

@@ -28,7 +28,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/brands")
-@Slf4j
+
 public class BrandController {
 	
 	private static Logger log = LoggerFactory.getLogger(Slf4j.class);
@@ -81,7 +81,7 @@ public class BrandController {
 	
 	@PutMapping("/{brandId}")
 	public ResponseEntity<SuccessResponse> updateBrand(
-				@Valid @PathVariable Integer brandId, 
+				@PathVariable Integer brandId, 
 				@Valid @RequestBody Brand brand) throws BadRequestException{
 
 		log.info("calling method : updateBrand()");

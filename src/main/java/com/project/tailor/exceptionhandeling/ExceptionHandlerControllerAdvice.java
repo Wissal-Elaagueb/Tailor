@@ -1,9 +1,15 @@
 package com.project.tailor.exceptionhandeling;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -26,13 +32,34 @@ public class ExceptionHandlerControllerAdvice {
 		ExceptionResponse error= new ExceptionResponse();
 		
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(e.getMessage());
+		error.add(e.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
 		
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
 	
-	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException e){
+
+		log.debug("the product associated with id entered not found : the id must be wrong");
+		
+		ExceptionResponse error= new ExceptionResponse();
+		
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		BindingResult result = e.getBindingResult();
+		List<FieldError> fieldErrors = result.getFieldErrors();
+		
+		ArrayList errorMesages = new ArrayList<>();
+		for (FieldError err: fieldErrors  ) {
+			String er= err.toString();
+			errorMesages.add(er.substring((er.lastIndexOf("default message")+17),er.length()-1));
+		}
+		
+		error.setMessage(errorMesages);
+		error.setTimeStamp(System.currentTimeMillis());
+		
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
 	
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ExceptionResponse> badRequestHandler(Exception e){
@@ -43,7 +70,7 @@ public class ExceptionHandlerControllerAdvice {
 		ExceptionResponse error= new ExceptionResponse();
 		
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(e.getMessage());
+		error.add("Id must be a number");
 		error.setTimeStamp(System.currentTimeMillis());
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
@@ -78,7 +105,7 @@ public class ExceptionHandlerControllerAdvice {
 		ExceptionResponse error= new ExceptionResponse();
 		
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.setMessage(e.getMessage());
+		error.add(e.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
