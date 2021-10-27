@@ -28,7 +28,6 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/products")
-@Slf4j
 public class productController {
 
 private static Logger log = LoggerFactory.getLogger(Slf4j.class);

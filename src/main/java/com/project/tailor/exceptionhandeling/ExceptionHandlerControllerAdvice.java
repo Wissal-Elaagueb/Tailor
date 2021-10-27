@@ -7,6 +7,7 @@ import org.slf4j.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -27,7 +28,7 @@ public class ExceptionHandlerControllerAdvice {
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<ExceptionResponse> handleResourceNotFound(BadRequestException e){
 
-		log.debug("the product associated with id entered not found : the id must be wrong");
+		log.warn("Calling Bad Request Exception handler");
 		
 		ExceptionResponse error= new ExceptionResponse();
 		
@@ -41,7 +42,7 @@ public class ExceptionHandlerControllerAdvice {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<ExceptionResponse> handleValidationException(MethodArgumentNotValidException e){
 
-		log.debug("the product associated with id entered not found : the id must be wrong");
+		log.warn("Calling Method Argument Not Valid Exception handler");
 		
 		ExceptionResponse error= new ExceptionResponse();
 		
@@ -49,7 +50,7 @@ public class ExceptionHandlerControllerAdvice {
 		BindingResult result = e.getBindingResult();
 		List<FieldError> fieldErrors = result.getFieldErrors();
 		
-		ArrayList errorMesages = new ArrayList<>();
+		ArrayList<String> errorMesages = new ArrayList<>();
 		for (FieldError err: fieldErrors  ) {
 			String er= err.toString();
 			errorMesages.add(er.substring((er.lastIndexOf("default message")+17),er.length()-1));
@@ -64,7 +65,7 @@ public class ExceptionHandlerControllerAdvice {
 	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<ExceptionResponse> badRequestHandler(Exception e){
 		
-		log.debug("the enterd id in the requst is not a number");
+		log.warn("Calling Method Argument Type Mismatch Exception handler");
 
 		
 		ExceptionResponse error= new ExceptionResponse();
@@ -76,6 +77,20 @@ public class ExceptionHandlerControllerAdvice {
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<ExceptionResponse> handleNotreadableException(Exception e){
+		
+		log.warn("Calling Message Not Readable Exception handler");
+
+		
+		ExceptionResponse error= new ExceptionResponse();
+		
+		error.setStatus(HttpStatus.BAD_REQUEST.value());
+		error.add(e.getMessage());
+		error.setTimeStamp(System.currentTimeMillis());
+		
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+	}
 	
 	//ResponseEntity<ResponseDTO>
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -83,7 +98,7 @@ public class ExceptionHandlerControllerAdvice {
 	public ResponseEntity<ExceptionResponse>  handleValidationExceptions(
 			DataIntegrityViolationException	 e) {
 		
-		log.debug("data validation error: the data entered dosen't match the asked constraints");
+		log.warn("Calling Data Integrity Violation Exception handler");
 		
 		/*
 			Map<String, String> errors = new HashMap<>();
