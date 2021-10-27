@@ -2,6 +2,8 @@ package com.project.tailor.service;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.project.tailor.dto.ProductRequestDTO;
 import com.project.tailor.entity.Product;
 import com.project.tailor.exceptionhandeling.BadRequestException;
@@ -17,4 +19,5 @@ public List<Product> findAll();
 	public void deleteById(Integer id) throws BadRequestException;
 
 	void save(ProductRequestDTO product) throws BadRequestException;
+
 }

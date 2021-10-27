@@ -127,17 +127,19 @@ public class ExceptionHandlerControllerAdvice {
 	}
 		
 	
- /*   
+   
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> handlebException(Exception e){
 
 		ExceptionResponse error= new ExceptionResponse();
+		
+		log.warn("Calling  Exception handler");
 
 		error.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
-		error.setMessage(e.getMessage());
+		error.add(e.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
 
 		return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	*/
+
 }

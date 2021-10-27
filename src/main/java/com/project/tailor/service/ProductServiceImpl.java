@@ -1,6 +1,8 @@
 package com.project.tailor.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.tailor.dao.ProductRepository;
 import com.project.tailor.dto.ProductRequestDTO;
@@ -57,14 +62,24 @@ public class ProductServiceImpl implements ProductService {
 		Brand brand = brandService.findById(product.getBrandId());		
 		
 		List<Integer> categoriesId = product.getCategoriesId();
-		List<Category> categories= new ArrayList();
+		List<Category> categories= new ArrayList<>();
 		Category category;
 		for (Integer i : categoriesId) {
 		  	category=  categoryService.findById(i);
 		  	categories.add(category);
 		}
+	/*	
+		String name = StringUtils.cleanPath(product.getPhotos().getOriginalFilename());
+		String photos="";
+		try {
+			photos = Base64.getEncoder().encodeToString(product.getPhotos().getBytes());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		
-		Product finalProduct = new Product(product,brand,categories);
+		Product finalProduct = new Product(product,photos,brand,categories);*/
+		
+		Product finalProduct = new Product(product,"",brand,categories);
 		
 		productRepository.save(finalProduct);
 	}

@@ -2,8 +2,7 @@ package com.project.tailor.dto;
 
 import java.util.List;
 import javax.validation.constraints.*;
-
-
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 
@@ -23,8 +22,8 @@ public class ProductRequestDTO {
 	@NotBlank(message="Product description can't be blank")
 	private String description;
 	
-	@Size(min=64, max=64, message="Photos length can' be more than 64")
-	private String photos;
+	@NotBlank(message="Product photos can't be blank")
+	private MultipartFile photos;
 	
 	@NotBlank(message="Product color can't be blank")
 	private String color;

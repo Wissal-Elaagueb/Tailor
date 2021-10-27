@@ -73,17 +73,16 @@ public class Product {
 	private List<Category> categories= new ArrayList<>();
 	
 	
-	public Product(ProductRequestDTO product, Brand brand, List<Category> categories) {
+	public Product(ProductRequestDTO product,String photos, Brand brand, List<Category> categories) {
 		this.name=product.getName();
 		this.code=product.getCode();
 		this.description=product.getDescription();
-		this.photos=product.getPhotos();
+		this.photos=photos;
 		this.color=product.getColor();
 		this.size=product.getSize();
 		this.fabric=product.getFabric();
 		this.brand=brand;
 		this.categories.addAll(categories);
-		System.out.println("heeeeeeeeeeere"+ this.categories);
 	}
 
 }

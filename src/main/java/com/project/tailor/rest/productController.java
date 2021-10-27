@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.project.tailor.dto.ProductRequestDTO;
 import com.project.tailor.entity.Product;
@@ -28,6 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/products")
+
 public class productController {
 
 private static Logger log = LoggerFactory.getLogger(Slf4j.class);
@@ -64,10 +68,12 @@ private static Logger log = LoggerFactory.getLogger(Slf4j.class);
 	
 	
 	@PostMapping("")
-	public ResponseEntity<SuccessResponse> createProduct(@Valid @RequestBody ProductRequestDTO product) throws BadRequestException  {
+	public ResponseEntity<SuccessResponse> createProduct(@Valid @RequestBody ProductRequestDTO product, @RequestParam MultipartFile images) throws BadRequestException  {
 		
 		log.info("calling method : createProduct()");
 		
+		//trying to read image
+		System.out.println(images);
 		productService.save(product);
 		
 		SuccessResponse response= new SuccessResponse("Product created with success",System.currentTimeMillis());
