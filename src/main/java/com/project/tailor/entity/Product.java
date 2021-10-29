@@ -15,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.*;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.tailor.dto.ProductRequestDTO;
@@ -44,8 +44,9 @@ public class Product {
 	@Column
 	private String description;
 	
-	@Column
-	private String photos;
+	@OneToMany(mappedBy = "product",
+			cascade= CascadeType.ALL)
+	private List<File> images;
 	
 	@Column
 	private String color;
@@ -73,11 +74,13 @@ public class Product {
 	private List<Category> categories= new ArrayList<>();
 	
 	
-	public Product(ProductRequestDTO product,String photos, Brand brand, List<Category> categories) {
+	
+	
+	public Product(ProductRequestDTO product, Brand brand, List<Category> categories) {
 		this.name=product.getName();
 		this.code=product.getCode();
 		this.description=product.getDescription();
-		this.photos=photos;
+		//this.images=images;
 		this.color=product.getColor();
 		this.size=product.getSize();
 		this.fabric=product.getFabric();

@@ -1,15 +1,14 @@
 package com.project.tailor.dto;
 
 import java.util.List;
+
 import javax.validation.constraints.*;
-import org.springframework.web.multipart.MultipartFile;
+
 
 import lombok.Data;
 
 @Data
 public class ProductRequestDTO {
-	
-	private Integer id;
 	
 	@NotBlank(message = "Product name can't be blank")
 	private String name;
@@ -22,8 +21,7 @@ public class ProductRequestDTO {
 	@NotBlank(message="Product description can't be blank")
 	private String description;
 	
-	@NotBlank(message="Product photos can't be blank")
-	private MultipartFile photos;
+	private List<Integer> images;
 	
 	@NotBlank(message="Product color can't be blank")
 	private String color;

@@ -1,32 +1,25 @@
 package com.project.tailor.service;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.project.tailor.dao.ProductRepository;
 import com.project.tailor.dto.ProductRequestDTO;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.entity.Category;
+import com.project.tailor.entity.File;
 import com.project.tailor.entity.Product;
 import com.project.tailor.exceptionhandeling.BadRequestException;
 
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
-	private static Logger log = LoggerFactory.getLogger(Slf4j.class);
 	
 	@Autowired
 	private ProductRepository productRepository;
@@ -36,6 +29,10 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	private CategoryService categoryService;
+	
+	@Autowired
+	private FileService fileService;
+	
 	
 	@Override
 	public List<Product> findAll() {
@@ -68,20 +65,24 @@ public class ProductServiceImpl implements ProductService {
 		  	category=  categoryService.findById(i);
 		  	categories.add(category);
 		}
-	/*	
-		String name = StringUtils.cleanPath(product.getPhotos().getOriginalFilename());
-		String photos="";
-		try {
-			photos = Base64.getEncoder().encodeToString(product.getPhotos().getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+		
+		Product finalProduct = new Product(product,brand,categories);
+		productRepository.save(finalProduct);
+		
+		
+		List<Integer> imagesId = product.getImages();
+		File image;
+		for (Integer i : imagesId) {
+		  	image=  fileService.findFileById(i);
+		  	if (image.getProduct()!=null)
+		  	  throw new BadRequestException("the selected image id - "+ i +" is already associated with another product");
+		  	
+		  	image.setProduct(finalProduct);
+		  	System.out.println(image.getProduct().getDescription());
+		  	fileService.update(i,image);
 		}
 		
-		Product finalProduct = new Product(product,photos,brand,categories);*/
 		
-		Product finalProduct = new Product(product,"",brand,categories);
-		
-		productRepository.save(finalProduct);
 	}
 
 	
