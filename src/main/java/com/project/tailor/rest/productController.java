@@ -65,7 +65,7 @@ public class productController {
 	
 	
 	@PostMapping("")
-	public ResponseEntity<SuccessResponse> createProduct(@Valid @RequestBody ProductRequestDTO product) throws BadRequestException  {
+	public ResponseEntity<SuccessResponse> createProduct(@Valid @RequestBody ProductRequestDTO product) throws BadRequestException, InterruptedException  {
 		
 		log.info("calling method : createProduct()");
 		

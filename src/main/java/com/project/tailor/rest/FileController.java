@@ -1,6 +1,9 @@
 package com.project.tailor.rest;
 
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,15 +35,15 @@ public class FileController {
 	
 	
 	@GetMapping("/{fileId}")
-	public ResponseEntity<SuccessResponse> findFileById (@PathVariable Integer fileId) throws BadRequestException{
+	public ResponseEntity<byte[]> findFileById (@PathVariable Integer fileId) throws BadRequestException, FileNotFoundException, IOException{
 		
 		log.info("calling method : findFileById()");
 		
-		MultipartFile file = fileService.findById(fileId);
+		ResponseEntity<byte[]> response = fileService.findById(fileId);
 
-		SuccessResponse response= new SuccessResponse(file,System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.OK);
-
+		//SuccessResponse response= new SuccessResponse(file,System.currentTimeMillis());
+	//	return new ResponseEntity<>(response, HttpStatus.OK);
+		return response;
 	}
 	
 	@PostMapping()

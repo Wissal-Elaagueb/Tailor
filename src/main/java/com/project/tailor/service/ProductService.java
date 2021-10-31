@@ -17,6 +17,6 @@ public interface ProductService {
 	
 	public void deleteById(Integer id) throws BadRequestException;
 
-	void save(ProductRequestDTO product) throws BadRequestException;
+	void save(ProductRequestDTO product) throws BadRequestException, InterruptedException;
 
 }

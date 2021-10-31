@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +56,8 @@ public class ProductServiceImpl implements ProductService {
 	
 	
 	@Override
-	public void save(ProductRequestDTO product) throws BadRequestException {
+	@Transactional(rollbackOn = BadRequestException.class)
+	public void save(ProductRequestDTO product) throws BadRequestException, InterruptedException {
 		
 		Brand brand = brandService.findById(product.getBrandId());		
 		
@@ -68,8 +71,7 @@ public class ProductServiceImpl implements ProductService {
 		
 		Product finalProduct = new Product(product,brand,categories);
 		productRepository.save(finalProduct);
-		
-		
+
 		List<Integer> imagesId = product.getImages();
 		File image;
 		for (Integer i : imagesId) {
@@ -81,8 +83,6 @@ public class ProductServiceImpl implements ProductService {
 		  	System.out.println(image.getProduct().getDescription());
 		  	fileService.update(i,image);
 		}
-		
-		
 	}
 
 	
