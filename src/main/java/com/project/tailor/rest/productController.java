@@ -79,7 +79,7 @@ public class productController {
 	@PutMapping("/{productId}")
 	public ResponseEntity<SuccessResponse> updateProduct(
 				@PathVariable Integer productId, 
-				@Valid @RequestBody Product product) throws BadRequestException{
+				@Valid @RequestBody ProductRequestDTO product) throws BadRequestException, InterruptedException{
 
 		log.info("calling method : updateProduct()");
 		

@@ -13,10 +13,12 @@ public interface ProductService {
 	
 	public Product findById(Integer id) throws BadRequestException;
 	
-	void update(Integer id, Product product) throws BadRequestException;
+	void update(Integer id, ProductRequestDTO product) throws BadRequestException, InterruptedException;
 	
 	public void deleteById(Integer id) throws BadRequestException;
 
 	void save(ProductRequestDTO product) throws BadRequestException, InterruptedException;
+
+	void save(ProductRequestDTO product, Integer id) throws BadRequestException, InterruptedException;
 
 }

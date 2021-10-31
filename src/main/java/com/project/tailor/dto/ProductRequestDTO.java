@@ -10,6 +10,7 @@ import lombok.Data;
 @Data
 public class ProductRequestDTO {
 	
+	
 	@NotBlank(message = "Product name can't be blank")
 	private String name;
 	

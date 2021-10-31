@@ -57,7 +57,7 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	@Transactional(rollbackOn = BadRequestException.class)
-	public void save(ProductRequestDTO product) throws BadRequestException, InterruptedException {
+	public void save(ProductRequestDTO product, Integer id) throws BadRequestException, InterruptedException {
 		
 		Brand brand = brandService.findById(product.getBrandId());		
 		
@@ -69,29 +69,46 @@ public class ProductServiceImpl implements ProductService {
 		  	categories.add(category);
 		}
 		
+		//check if in old verion there images that are not in the new one and delete them
+		if (id!=null) {
+			List<File> oldImages = findById(id).getImages();
+			List<Integer> imagesId = product.getImages();
+			for (File f: oldImages) {
+				if(!imagesId.contains(f.getId()))
+					f.setProduct(null);
+			}	
+		}
+		
 		Product finalProduct = new Product(product,brand,categories);
+		finalProduct.setId(id);
 		productRepository.save(finalProduct);
+		
 
 		List<Integer> imagesId = product.getImages();
 		File image;
 		for (Integer i : imagesId) {
 		  	image=  fileService.findFileById(i);
-		  	if (image.getProduct()!=null)
-		  	  throw new BadRequestException("the selected image id - "+ i +" is already associated with another product");
-		  	
+		  	if (image.getProduct()!=null && image.getProduct()==finalProduct) {
+		  			throw new BadRequestException("the selected image id - "+ i +" is already associated with another product");
+		  	}
+		  	  
 		  	image.setProduct(finalProduct);
 		  	System.out.println(image.getProduct().getDescription());
 		  	fileService.update(i,image);
 		}
 	}
-
+	
+	@Override
+	@Transactional(rollbackOn = BadRequestException.class)
+	public void save(ProductRequestDTO product) throws BadRequestException, InterruptedException{
+		save(product,null);
+	}
 	
 	
 	@Override
-	public void update(Integer id, Product product) throws BadRequestException {
+	public void update(Integer id, ProductRequestDTO product) throws BadRequestException, InterruptedException {
 		findById(id);	
-		product.setId(id);
-		productRepository.save(product);
+		save(product,id);
 	}
 
 	
