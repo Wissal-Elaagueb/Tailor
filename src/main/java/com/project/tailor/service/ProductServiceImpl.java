@@ -8,9 +8,12 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.project.tailor.dao.ProductRepository;
+import com.project.tailor.dto.FilterProductDTO;
 import com.project.tailor.dto.ProductRequestDTO;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.entity.Category;
@@ -68,17 +71,18 @@ public class ProductServiceImpl implements ProductService {
 		  	category=  categoryService.findById(i);
 		  	categories.add(category);
 		}
-		
 		//check if in old verion there images that are not in the new one and delete them
 		if (id!=null) {
-			List<File> oldImages = findById(id).getImages();
-			List<Integer> imagesId = product.getImages();
+			List<File> oldImages = findById(id).getImages(); 
+			List<Integer> newImages = product.getImages(); 
 			for (File f: oldImages) {
-				if(!imagesId.contains(f.getId()))
-					f.setProduct(null);
+				if(!newImages.contains(f.getId())) {
+					fileService.delete(f.getId());
+				    
+				}
+					
 			}	
 		}
-		
 		Product finalProduct = new Product(product,brand,categories);
 		finalProduct.setId(id);
 		productRepository.save(finalProduct);
@@ -88,18 +92,16 @@ public class ProductServiceImpl implements ProductService {
 		File image;
 		for (Integer i : imagesId) {
 		  	image=  fileService.findFileById(i);
-		  	if (image.getProduct()!=null && image.getProduct()==finalProduct) {
+		  	if (image.getProduct()!=null && image.getProduct().getId()!=finalProduct.getId()) {
 		  			throw new BadRequestException("the selected image id - "+ i +" is already associated with another product");
 		  	}
 		  	  
 		  	image.setProduct(finalProduct);
-		  	System.out.println(image.getProduct().getDescription());
 		  	fileService.update(i,image);
 		}
 	}
 	
-	@Override
-	@Transactional(rollbackOn = BadRequestException.class)
+
 	public void save(ProductRequestDTO product) throws BadRequestException, InterruptedException{
 		save(product,null);
 	}
@@ -118,5 +120,27 @@ public class ProductServiceImpl implements ProductService {
 		findById(id);	
 		productRepository.deleteById(id);
 	}
+	
+	@Override
+	public List<Product> filter(String name,String color,String size,String fabric,Integer brandId,List<Integer> categoriesId,Integer pageNumber,Integer pageSize){
+		List<Product> all;
+		if (name.strip().equals(""))
+			name="%";
+		else
+			name=name+"%";
+		if (color.strip().equals(""))
+			color="%";
+		if (size.strip().equals(""))
+			size="%";
+		if (fabric.strip().equals(""))
+			fabric="%";
+		Pageable page= PageRequest.of(pageNumber, pageSize);
+		if (brandId==null)
+			all= productRepository.filter(name,color,size,fabric,page);
+		else
+			all= productRepository.filter(name,color,size,fabric,brandId,page);
+		return all;
+	}
+
 
 }

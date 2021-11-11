@@ -1,5 +1,6 @@
 package com.project.tailor.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +38,7 @@ public class File {
 	private String path;
 	
 	@JsonIgnore
-	@ManyToOne
+	@ManyToOne()
 	@JoinColumn(name="product_id")
 	private Product product;
 

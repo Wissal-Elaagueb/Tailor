@@ -19,6 +19,8 @@ public interface FileService {
 
 	File findFileById(Integer id) throws BadRequestException;
 
+	void delete(Integer id) throws BadRequestException;
+
 	void update(Integer id, File file) throws BadRequestException;
 
 }

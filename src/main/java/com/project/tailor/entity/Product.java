@@ -17,6 +17,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.tailor.dto.ProductRequestDTO;
 
@@ -29,7 +31,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class Product {
-
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -44,8 +45,10 @@ public class Product {
 	@Column
 	private String description;
 	
-	@OneToMany(mappedBy = "product",
-			cascade= CascadeType.ALL)
+	@OneToMany(mappedBy = "product"
+			// if there is cascade Type: it dosen't delete
+			,cascade = CascadeType.ALL
+			)
 	private List<File> images;
 	
 	@Column

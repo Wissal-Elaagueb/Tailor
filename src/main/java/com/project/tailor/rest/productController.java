@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.tailor.dto.FilterProductDTO;
 import com.project.tailor.dto.ProductRequestDTO;
 import com.project.tailor.entity.Product;
 import com.project.tailor.exceptionhandeling.BadRequestException;
@@ -99,6 +101,26 @@ public class productController {
 		productService.deleteById(productId);	
 		
 		SuccessResponse response= new SuccessResponse("Product deleted with success",System.currentTimeMillis());
+		return new ResponseEntity<>(response, HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/try")
+	public ResponseEntity<SuccessResponse> filter(@RequestParam(required = false, defaultValue="%") String name,
+												@RequestParam(required = false, defaultValue="%") String color,
+												@RequestParam(required = false, defaultValue="%") String size,
+												@RequestParam(required = false, defaultValue="%") String fabric,
+												@RequestParam(required = false) Integer brandId,
+												@RequestParam(required = false, defaultValue="0") Integer pageNumber,
+												@RequestParam(required = false, defaultValue="30") Integer pageSize,
+												@RequestParam(required = false) List<Integer> categoriesId) {
+		System.out.println(categoriesId);
+		
+		log.info("calling method : filter()");
+		
+		List<Product> products= productService.filter(name,color,size,fabric,brandId,categoriesId,pageNumber,pageSize);
+
+		SuccessResponse response= new SuccessResponse(products,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}

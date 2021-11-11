@@ -73,7 +73,7 @@ public class ExceptionHandlerControllerAdvice {
 		ExceptionResponse error= new ExceptionResponse();
 		
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
-		error.add("Id must be a number");
+		error.add("Must be a number");
 		error.setTimeStamp(System.currentTimeMillis());
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);

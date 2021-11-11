@@ -1,11 +1,12 @@
 package com.project.tailor.service;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Random;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +85,14 @@ public class FileServiceImpl implements FileService {
 		findFileById(id);	
 		file.setId(id);
 		fileRepository.save(file);
+	}
+	
+	@Override
+	@Transactional
+	public void delete(Integer id) throws BadRequestException {
+		findFileById(id);
+		//custom cuz the default one one with cascadeType.all didn't work
+		fileRepository.deleteWithId(id); 
 	}
 	
 	
