@@ -5,11 +5,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
+import org.hibernate.Session;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.stereotype.Service;
 
 import com.project.tailor.dao.ProductRepository;
@@ -20,6 +30,8 @@ import com.project.tailor.entity.Category;
 import com.project.tailor.entity.File;
 import com.project.tailor.entity.Product;
 import com.project.tailor.exceptionhandeling.BadRequestException;
+
+import static jdk.javadoc.internal.doclets.formats.html.markup.HtmlStyle.title;
 
 
 @Service
@@ -37,7 +49,9 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Autowired
 	private FileService fileService;
-	
+
+	@Autowired
+	EntityManager entityManager;
 	
 	@Override
 	public List<Product> findAll() {
@@ -123,7 +137,25 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public List<Product> filter(String name,String color,String size,String fabric,Integer brandId,List<Integer> categoriesId,Integer pageNumber,Integer pageSize){
+
+
+		/*CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
+		Root<Product> product = cq.from(Product.class);
+
+		if (name != null)
+			cq.where(cb.equal(product.get("name"),name));
+		if (color != null)
+			cq.where(cb.equal(product.get("color"),color));
+
+
+		TypedQuery<Product> query = entityManager.createQuery(cq);
+
+		List<Product> all = query.getResultList();*/
+
+
 		List<Product> all;
+
 		if (name.strip().equals(""))
 			name="%";
 		else
@@ -139,6 +171,8 @@ public class ProductServiceImpl implements ProductService {
 			all= productRepository.filter(name,color,size,fabric,page);
 		else
 			all= productRepository.filter(name,color,size,fabric,brandId,page);
+
+
 		return all;
 	}
 
