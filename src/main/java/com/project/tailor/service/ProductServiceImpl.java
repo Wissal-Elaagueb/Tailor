@@ -130,9 +130,10 @@ public class ProductServiceImpl implements ProductService {
 	
 	
 	@Override
-	public void deleteById(Integer id) throws BadRequestException {
-		findById(id);	
+	public Product deleteById(Integer id) throws BadRequestException {
+		Product product = findById(id);	
 		productRepository.deleteById(id);
+		return product;
 	}
 	
 	@Override

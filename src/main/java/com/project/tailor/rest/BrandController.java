@@ -72,7 +72,7 @@ public class BrandController {
 		
 		brandService.save(brand);
 		
-		SuccessResponse response= new SuccessResponse("Brand created with success",System.currentTimeMillis());
+		SuccessResponse response= new SuccessResponse(brand,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 	
@@ -88,7 +88,7 @@ public class BrandController {
 		
 		brandService.update(brandId, brand);
 
-		SuccessResponse response= new SuccessResponse("Brand updatetd with success",System.currentTimeMillis());
+		SuccessResponse response= new SuccessResponse(brand,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 		
 	}
@@ -101,7 +101,9 @@ public class BrandController {
 		
 		brandService.deleteById(brandId);	
 		
-		SuccessResponse response= new SuccessResponse("Brand deleted with success",System.currentTimeMillis());
+		
+		
+		SuccessResponse response= new SuccessResponse("deleted",System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}

@@ -15,7 +15,7 @@ public interface ProductService {
 	
 	void update(Integer id, ProductRequestDTO product) throws BadRequestException, InterruptedException;
 	
-	public void deleteById(Integer id) throws BadRequestException;
+	public Product deleteById(Integer id) throws BadRequestException;
 
 	void save(ProductRequestDTO product) throws BadRequestException, InterruptedException;
 

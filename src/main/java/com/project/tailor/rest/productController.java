@@ -98,9 +98,7 @@ public class productController {
 
 		log.info("calling method : deleteProduct()");
 		
-		productService.deleteById(productId);	
-		
-		Product product = productService.findById(productId);
+		Product product = productService.deleteById(productId);	
 
 		SuccessResponse response= new SuccessResponse(product,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
