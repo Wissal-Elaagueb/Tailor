@@ -73,7 +73,7 @@ public class productController {
 		
 		productService.save(product);
 		
-		SuccessResponse response= new SuccessResponse("Product created with success",System.currentTimeMillis());
+		SuccessResponse response= new SuccessResponse(product,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 		}
 	
@@ -87,7 +87,7 @@ public class productController {
 		
 		productService.update(productId, product);
 
-		SuccessResponse response= new SuccessResponse("Product updatetd with success",System.currentTimeMillis());
+		SuccessResponse response= new SuccessResponse(product,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 		
 	}
@@ -100,7 +100,9 @@ public class productController {
 		
 		productService.deleteById(productId);	
 		
-		SuccessResponse response= new SuccessResponse("Product deleted with success",System.currentTimeMillis());
+		Product product = productService.findById(productId);
+
+		SuccessResponse response= new SuccessResponse(product,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}

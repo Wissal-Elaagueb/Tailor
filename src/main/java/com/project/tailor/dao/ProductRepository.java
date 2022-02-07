@@ -23,8 +23,4 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 			+ "and p.size like ?3 and p.fabric like ?4 "
 			+ "and p.brand.id  like ?5")
 	public List<Product> filter(String name, String color, String size, String fabric, Integer brandId, Pageable page);
-	
-	
-	
-	
 }
