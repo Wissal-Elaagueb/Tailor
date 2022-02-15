@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.project.tailor.dao.BrandRepository;
+import com.project.tailor.dto.BrandRequestDTO;
 import com.project.tailor.entity.Brand;
 
 @Service
@@ -39,15 +40,17 @@ public class BrandServiceImpl implements BrandService {
 
 
 	@Override
-	public void save(Brand brand) {
-		brandRepository.save(brand);
+	public void save(BrandRequestDTO brand) {
+		Brand finalBrand= new Brand(brand);
+		brandRepository.save(finalBrand);
 	}
 	
 	@Override
-	public void update(Integer id, Brand brand) throws BadRequestException {
-		findById(id);	
-		brand.setId(id);
-		brandRepository.save(brand);
+	public void update(Integer id, BrandRequestDTO brand) throws BadRequestException {
+		findById(id);
+		Brand finalBrand = new Brand(brand);
+		finalBrand.setId(id);
+		brandRepository.save(finalBrand);
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.tailor.dto.BrandRequestDTO;
 
 
 @Entity
@@ -31,12 +32,19 @@ public class Brand {
 	private Integer id;
 
     @Column(name="name",unique=true)
-	@NotBlank(message = "Brand name can't be blank")
 	private String name;
+    
+    @Column
+	private String description;
     
     @OneToMany(mappedBy = "brand",
     			cascade= CascadeType.ALL)
     private List<Product> products;
+    
+    public Brand (BrandRequestDTO brand) {
+    	this.name=brand.getName();
+    	this.description=brand.getDescription();
+    }
 
 
 }

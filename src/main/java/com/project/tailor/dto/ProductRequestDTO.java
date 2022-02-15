@@ -27,7 +27,7 @@ public class ProductRequestDTO {
 	@NotBlank(message="Product color can't be blank")
 	private String color;
 	
-	//table of available size I guess: change it to many to many
+	//table of available size I guess: change it to table
 	@NotBlank(message="Product size can't be blank")
 	private String size;
 	

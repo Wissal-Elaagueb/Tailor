@@ -1,8 +1,6 @@
 package com.project.tailor.entity;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,6 +19,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.tailor.dto.CategoryRequestDTO;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,10 +40,8 @@ public class Category {
 
 	
     @Column(name="name",unique=true)
-    @NotBlank(message = "Category name can't be blank")
 	private String name;
 
-    @NotBlank(message = "Description can't be blank")
    	private String description;
 
     
@@ -62,10 +59,11 @@ public class Category {
     private Set<Product> products = new HashSet<Product>();
    	
 
-	public Category(String name, String description) {
-		this.name = name;
-		this.description = description;
+	public Category(CategoryRequestDTO category) {
+		this.name = category.getName();
+		this.description = category.getDescription();
 	}
-   	
-   	
+ 
+	
+	
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.project.tailor.dto.BrandRequestDTO;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.service.BrandService;
 import org.slf4j.Logger;
@@ -66,7 +67,7 @@ public class BrandController {
 	
 	
 	@PostMapping("")
-	public ResponseEntity<SuccessResponse> createBrand(@Valid @RequestBody Brand brand)  {
+	public ResponseEntity<SuccessResponse> createBrand(@Valid @RequestBody BrandRequestDTO brand)  {
 		
 		log.info("calling method : createBrand()");
 		
@@ -82,7 +83,7 @@ public class BrandController {
 	@PutMapping("/{brandId}")
 	public ResponseEntity<SuccessResponse> updateBrand(
 				@PathVariable Integer brandId, 
-				@Valid @RequestBody Brand brand) throws BadRequestException{
+				@Valid @RequestBody BrandRequestDTO brand) throws BadRequestException{
 
 		log.info("calling method : updateBrand()");
 		
