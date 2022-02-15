@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.tailor.dao.CategoryRepository;
+import com.project.tailor.dto.CategoryRequestDTO;
 import com.project.tailor.entity.Brand;
 import com.project.tailor.entity.Category;
 import com.project.tailor.exceptionhandeling.BadRequestException;
@@ -39,15 +40,17 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void save(Category category) {
-		categoryRepository.save(category);
+	public void save(CategoryRequestDTO category) {
+		Category finalCategory = new Category(category);
+		categoryRepository.save(finalCategory);
 	}
 	
 	@Override
-	public void update(Integer id,Category category) throws BadRequestException {
+	public void update(Integer id,CategoryRequestDTO category) throws BadRequestException {
 		findById(id);
-		category.setId(id);
-		categoryRepository.save(category);
+		Category finalCategory = new Category(category);
+		finalCategory.setId(id);
+		categoryRepository.save(finalCategory);
 
 	}
 

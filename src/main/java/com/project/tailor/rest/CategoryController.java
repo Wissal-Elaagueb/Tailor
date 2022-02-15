@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.project.tailor.dto.CategoryRequestDTO;
 import com.project.tailor.entity.Category;
 import com.project.tailor.exceptionhandeling.BadRequestException;
 import com.project.tailor.exceptionhandeling.SuccessResponse;
@@ -64,7 +64,7 @@ public class CategoryController {
 	
 	
 	@PostMapping("")
-	public ResponseEntity<SuccessResponse> createCategory(@Valid @RequestBody Category category) throws Exception {
+	public ResponseEntity<SuccessResponse> createCategory(@Valid @RequestBody CategoryRequestDTO category) throws Exception {
 				
 		log.info("calling method : createCategory()");
 		
@@ -79,7 +79,7 @@ public class CategoryController {
 	@PutMapping("/{categoryId}")
 	public ResponseEntity<SuccessResponse> updateCategory(
 				@Valid @PathVariable Integer categoryId,
-				@Valid @RequestBody Category category) throws BadRequestException  {
+				@Valid @RequestBody CategoryRequestDTO category) throws BadRequestException  {
 				
 		log.info("calling method : updateCategory()");
 		
