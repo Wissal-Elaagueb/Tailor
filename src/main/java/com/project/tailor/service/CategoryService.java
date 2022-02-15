@@ -17,7 +17,7 @@ public interface CategoryService {
 	
 	void update(Integer id, Category category) throws BadRequestException;
 	
-	public void deleteById(int id) throws BadRequestException;
+	public Category deleteById(int id) throws BadRequestException;
 
 	
 }

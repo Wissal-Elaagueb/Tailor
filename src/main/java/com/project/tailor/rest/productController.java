@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.tailor.dto.FilterProductDTO;
 import com.project.tailor.dto.ProductRequestDTO;
+//import com.project.tailor.dto.ProductResponseDTO;
 import com.project.tailor.entity.Product;
 import com.project.tailor.exceptionhandeling.BadRequestException;
 import com.project.tailor.exceptionhandeling.SuccessResponse;
@@ -58,6 +58,8 @@ public class productController {
 		log.info("calling method : findProductById()");
 		
 		Product product = productService.findById(productId);
+		//ProductResponseDTO prd= new ProductResponseDTO(product);
+		//System.out.println(prd);
 
 		SuccessResponse response= new SuccessResponse(product,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
@@ -114,7 +116,6 @@ public class productController {
 												@RequestParam(required = false, defaultValue="0") Integer pageNumber,
 												@RequestParam(required = false, defaultValue="30") Integer pageSize,
 												@RequestParam(required = false) List<Integer> categoriesId) {
-		System.out.println(categoriesId);
 		
 		log.info("calling method : filter()");
 		

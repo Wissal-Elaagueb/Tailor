@@ -17,7 +17,7 @@ public interface BrandService {
 	
 	void update(Integer brandId, Brand brand) throws BadRequestException;
 	
-	public void deleteById(Integer id) throws BadRequestException;
+	public Brand deleteById(Integer id) throws BadRequestException;
 
 
 	

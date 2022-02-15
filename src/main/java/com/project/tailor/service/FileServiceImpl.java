@@ -39,7 +39,12 @@ public class FileServiceImpl implements FileService {
 		savedFile.setOriginalName(file.getOriginalFilename());
 		savedFile.setContentType(file.getContentType());
 		savedFile.setFileName(generateRandomString());
-		savedFile.setPath("ProductImages/"+savedFile.getFileName()+"."+file.getContentType().substring(6));
+		String type;
+		if (file.getContentType() == "image/jpeg")
+			type = "image/jpg";
+		else
+			type=file.getContentType();
+		savedFile.setPath("ProductImages/"+savedFile.getFileName()+"."+type.substring(6));
 		
 		java.io.File convFile = new java.io.File (savedFile.getPath());
 		convFile.createNewFile();

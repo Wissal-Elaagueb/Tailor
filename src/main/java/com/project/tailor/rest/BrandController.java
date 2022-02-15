@@ -99,11 +99,11 @@ public class BrandController {
 
 		log.info("calling method : deleteBrand()");
 		
-		brandService.deleteById(brandId);	
+		Brand brand = brandService.deleteById(brandId);	
 		
 		
 		
-		SuccessResponse response= new SuccessResponse("deleted",System.currentTimeMillis());
+		SuccessResponse response= new SuccessResponse(brand,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 
 	}

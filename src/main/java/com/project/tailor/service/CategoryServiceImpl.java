@@ -3,6 +3,8 @@ package com.project.tailor.service;
 import java.util.List;
 import java.util.Optional;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,8 @@ public class CategoryServiceImpl implements CategoryService {
 	
 	@Override
 	public List<Category> findAll() {
-		return categoryRepository.findAll();
+	
+			return categoryRepository.findAll();
 	}
 	
 
@@ -48,10 +51,12 @@ public class CategoryServiceImpl implements CategoryService {
 
 	}
 
+	
 	@Override
-	public void deleteById(int id) throws BadRequestException {
-		findById(id);
+	public Category deleteById(int id) throws BadRequestException {
+		Category category= findById(id);
 		categoryRepository.deleteById(id);
+		return category;
 	}
 
 }

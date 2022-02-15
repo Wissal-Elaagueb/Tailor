@@ -1,6 +1,10 @@
 package com.project.tailor.service;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -133,6 +137,18 @@ public class ProductServiceImpl implements ProductService {
 	public Product deleteById(Integer id) throws BadRequestException {
 		Product product = findById(id);	
 		productRepository.deleteById(id);
+		try {
+			List<File> files = product.getImages();
+			
+			if (files.size() > 0) {
+				for (File file : files) {
+					java.io.File convFile = new java.io.File ("C:\\Users\\user16\\Desktop\\All\\tech\\Spring\\Tailor\\"+file.getPath());
+					convFile.delete();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return product;
 	}
 	

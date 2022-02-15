@@ -41,8 +41,6 @@ public class FileController {
 		
 		ResponseEntity<byte[]> response = fileService.findById(fileId);
 
-		//SuccessResponse response= new SuccessResponse(file,System.currentTimeMillis());
-	//	return new ResponseEntity<>(response, HttpStatus.OK);
 		return response;
 	}
 	

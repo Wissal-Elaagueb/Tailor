@@ -1,8 +1,9 @@
 package com.project.tailor.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,19 +18,22 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.Cascade;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.tailor.dto.ProductRequestDTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Setter
+@Getter
+//@ToString
 public class Product {
 	
 	@Id
@@ -46,7 +50,6 @@ public class Product {
 	private String description;
 	
 	@OneToMany(mappedBy = "product"
-			// if there is cascade Type: it dosen't delete
 			,cascade = CascadeType.ALL
 			)
 	private List<File> images;
@@ -74,7 +77,7 @@ public class Product {
             inverseJoinColumns = {
                     @JoinColumn(name = "category_id", referencedColumnName = "id",
                             nullable = false)})
-	private List<Category> categories= new ArrayList<>();
+	private Set<Category> categories= new HashSet<Category>();
 	
 	
 	

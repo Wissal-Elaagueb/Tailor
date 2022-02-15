@@ -1,5 +1,6 @@
 package com.project.tailor.exceptionhandeling;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -93,10 +94,11 @@ public class ExceptionHandlerControllerAdvice {
 		
 		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
 	}
+
 	
 	//ResponseEntity<ResponseDTO>
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(DataIntegrityViolationException.class)
+	//@ResponseStatus(HttpStatus.BAD_REQUEST)
+/*	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<ExceptionResponse>  handleValidationExceptions(
 			DataIntegrityViolationException	 e) {
 		
@@ -119,17 +121,17 @@ public class ExceptionHandlerControllerAdvice {
 						"Validation errors",
 						400));
 		*/
-		ExceptionResponse error= new ExceptionResponse();
-		
+	/*	ExceptionResponse error= new ExceptionResponse();
+			
 		error.setStatus(HttpStatus.BAD_REQUEST.value());
 		error.add(e.getMessage());
 		error.setTimeStamp(System.currentTimeMillis());
 		
-		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST); 
 	}
 		
 	
- 
+/*	
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ExceptionResponse> handlebException(Exception e){
 
@@ -143,5 +145,5 @@ public class ExceptionHandlerControllerAdvice {
 
 		return new ResponseEntity<>(error,HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-
+*/
 }

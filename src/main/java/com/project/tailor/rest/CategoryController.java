@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,12 +39,13 @@ public class CategoryController {
 	@GetMapping()
 	public  ResponseEntity<SuccessResponse> findAllCategories() throws Exception{
 	
-		log.info("calling method : findAllCategories()");
+			log.info("calling method : findAllCategories()");
+			
+			List<Category> categories = categoryService.findAll();
+			
+			SuccessResponse response= new SuccessResponse(categories,System.currentTimeMillis());
+			return new ResponseEntity<>(response, HttpStatus.OK);
 		
-		List<Category> categories = categoryService.findAll();
-		
-		SuccessResponse response= new SuccessResponse(categories,System.currentTimeMillis());
-		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
 	
@@ -68,7 +70,7 @@ public class CategoryController {
 		
 		categoryService.save(category);
 		
-		SuccessResponse response= new SuccessResponse("Category created with success",System.currentTimeMillis());
+		SuccessResponse response= new SuccessResponse(category,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
@@ -83,21 +85,19 @@ public class CategoryController {
 		
 		categoryService.update(categoryId,category);
 		
-		SuccessResponse response= new SuccessResponse("Category updated with success",System.currentTimeMillis());
+		SuccessResponse response= new SuccessResponse(category,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 				
 	}
 	
-	
-	
+
 	@DeleteMapping("/{categoryId}")
 	public ResponseEntity<SuccessResponse> deleteCategory(@PathVariable int categoryId) throws BadRequestException  {
 			
 		log.info("calling method : deleteCategory()");
 		
-		categoryService.deleteById(categoryId);
-		
-		SuccessResponse response= new SuccessResponse("Category deleted with success",System.currentTimeMillis());
+		Category category= categoryService.deleteById(categoryId);
+		SuccessResponse response= new SuccessResponse(category,System.currentTimeMillis());
 		return new ResponseEntity<>(response, HttpStatus.OK);
 			
 	}

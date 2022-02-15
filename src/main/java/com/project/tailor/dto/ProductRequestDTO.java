@@ -37,7 +37,7 @@ public class ProductRequestDTO {
 	@NotNull(message="Product can't be without a brand")
 	private Integer brandId;
 	
-	@NotEmpty(message="Product can't be without at least one category")
+	@NotEmpty(message="Product mst have at least one category")
 	private List<Integer> categoriesId;
 
 	
