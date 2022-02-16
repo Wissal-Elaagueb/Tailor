@@ -6,13 +6,17 @@ import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
@@ -153,24 +157,43 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	@Override
-	public List<Product> filter(String name,String color,String size,String fabric,Integer brandId,List<Integer> categoriesId,Integer pageNumber,Integer pageSize){
+	public List<Product> filter(String name,String color,String size,String fabric,Integer brandId,List<Integer> categoriesId,Integer pageNumber,Integer pageSize) throws BadRequestException{
 
 
-		/*CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Product> cq = cb.createQuery(Product.class);
 		Root<Product> product = cq.from(Product.class);
 
-		if (name != null)
-			cq.where(cb.equal(product.get("name"),name));
-		if (color != null)
-			cq.where(cb.equal(product.get("color"),color));
-
-
+		List<Predicate> predicates = new ArrayList<>();
+		
+		if (!name.equals("%"))
+			 predicates.add(cb.equal(product.get("name"),name));
+		if (!color.equals("%"))
+			predicates.add(cb.equal(product.get("color"),color));
+		if (!size.equals("%"))
+			predicates.add(cb.equal(product.get("size"),size));
+		if (!fabric.equals("%"))
+			predicates.add(cb.equal(product.get("fabric"),fabric));
+		if (brandId != null) {
+			Brand b = brandService.findById(brandId);
+			 predicates.add(cb.equal(product.get("brand"),b));
+		}
+		
+		if (categoriesId != null) {
+			Set<Category> categories= new HashSet<Category>();
+			for (Integer id :categoriesId) {
+				categories.add(categoryService.findById(id));
+			}
+			predicates.add(cb.equal(product.get("categories"),categories));
+		}
+		System.out.println(categoriesId);
+		
+		Pageable page= PageRequest.of(pageNumber, pageSize);
+		cq.where(predicates.toArray(new Predicate[0]));
 		TypedQuery<Product> query = entityManager.createQuery(cq);
-
-		List<Product> all = query.getResultList();*/
-
-
+		List<Product> all = query.getResultList();
+		/*
+		
 		List<Product> all;
 
 		if (name.strip().equals(""))
@@ -188,7 +211,7 @@ public class ProductServiceImpl implements ProductService {
 			all= productRepository.filter(name,color,size,fabric,page);
 		else
 			all= productRepository.filter(name,color,size,fabric,brandId,page);
-
+		*/
 
 		return all;
 	}

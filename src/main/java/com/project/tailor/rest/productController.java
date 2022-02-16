@@ -115,7 +115,7 @@ public class productController {
 												@RequestParam(required = false) Integer brandId,
 												@RequestParam(required = false, defaultValue="0") Integer pageNumber,
 												@RequestParam(required = false, defaultValue="30") Integer pageSize,
-												@RequestParam(required = false) List<Integer> categoriesId) {
+												@RequestParam(required = false) List<Integer> categoriesId) throws BadRequestException {
 		
 		log.info("calling method : filter()");
 		
